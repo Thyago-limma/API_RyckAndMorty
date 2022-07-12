@@ -4,9 +4,7 @@ const mongoose = require('mongoose');
 const readAllCharactersController = async (req, res) => {
   const allCharacters = await CharactersService.readAllCharactersUrl();
   if (allCharacters.length == 0) {
-    return res
-      .status(404)
-      .send({ message: 'Personagem não Cadastrado' });
+    return res.status(404).send({ message: 'Personagem não Cadastrado' });
   }
   res.send(allCharacters);
 };
@@ -54,26 +52,28 @@ const updateCharacter = async (req, res) => {
     });
   }
 
-  const upChar = await CharactersService.updateCharacterUrl(id, updatedCharacter);
-  
-  res.send(upChar);
+  const upChar = await CharactersService.updateCharacterUrl(
+    id,
+    updatedCharacter,
+  );
 
+  res.send(upChar);
 };
 
 const deleteCharacter = async (req, res) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send({
-            message: 'ID inválido'
-        });
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'ID inválido',
+    });
 
-        const character = await CharactersService.readAllCharactersByIdUrl(id);
+    const character = await CharactersService.readAllCharactersByIdUrl(id);
 
-        if (!character) {
-            return res.status(206);
-        }
+    if (!character) {
+      return res.status(206);
     }
+  }
 };
 
 module.exports = {
@@ -83,3 +83,4 @@ module.exports = {
   updateCharacter,
   deleteCharacter,
 };
+
